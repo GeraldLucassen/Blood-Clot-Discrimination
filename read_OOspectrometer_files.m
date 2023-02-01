@@ -1,19 +1,23 @@
-% Read in all the spectra from a given dtae(folder
-
-folder_name='MeasuredSpectra\27-Oct-2022\'; 'MeasuredSpectra\26-Oct-2022\'; 
-for ii=1:99999
-    filename=['.\',folder_name,'OOSpectrum',num2str(ii,'%05d'),'.mat'];
-    if isfile(filename)
-        ii
-        load(filename)
-        spectra_av(ii,:)=mean(spectrum);
-        sample{ii}=comment{2};
-        device{ii}=comment{3};
-        device{ii}=strrep(device{ii},'100 micron fiber (Photonic Needle) 16 degree', '100\mu,16°');   % Shorten device names 
-        splitter{ii}=comment{4}; 
-        device_splitter_combination{ii}=[device{ii},'+',splitter{ii}]
-    else
-        break
+% Read in all the spectra from a given data folders
+folder_list={'MeasuredSpectra\03-Jan-2023\'}; % 'MeasuredSpectra\27-Oct-2022\';'MeasuredSpectra\09-Nov-2022\',;'MeasuredSpectra\26-Oct-2022\';'MeasuredSpectra\07-Nov-2022\';
+counter=0;
+for jj=1:length(folder_list)
+    folder_name=folder_list{jj}
+    for ii=1:99999
+        filename=['.\',folder_name,'OOSpectrum',num2str(ii,'%05d'),'.mat'];
+        if isfile(filename)
+            counter=counter+1;
+            load(filename)
+            spectra_av(counter,:)=mean(spectrum);
+            sample{counter}=comment{2};
+            device{counter}=comment{3};
+            device{counter}=strrep(device{counter},'100 micron fiber (Photonic Needle) 16 degree', '100\mu,16°');   % Shorten device names
+            splitter{counter}=comment{4};
+            device_splitter_combination{counter}=[device{counter},'+',splitter{counter}];
+            
+        else
+            break
+        end
     end
 end
 
